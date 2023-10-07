@@ -6,6 +6,12 @@
 #define IGNITION_PIN 3
 #define BUZZER_PIN 9 // Define the buzzer pin
 
+CRGB blue(0, 0, 255);
+CRGB red(255, 0, 0);
+CRGB green(0, 255, 0);
+
+int color = 0;
+
 bool ignited = false;
 
 CRGB leds[NUM_LEDS];
@@ -26,6 +32,7 @@ void setup()
   pinMode(BUZZER_PIN, OUTPUT); // Set the buzzer pin as an OUTPUT
 
   btn.attachClick(click1);
+  btn.attachDoubleClick(click2);
 }
 
 
@@ -57,7 +64,18 @@ void click1()
 
     for (int i = 0; i < NUM_LEDS; i++)
     {
-      leds[i] = CRGB(0, 0, 255);
+      if (color == 0)
+      {
+        leds[i] = blue;
+      }
+      if (color == 1)
+      {
+        leds[i] = red;
+      }
+      if (color == 2)
+      {
+        leds[i] = green;
+      }
       FastLED.show();
     }
     noTone(BUZZER_PIN);
@@ -79,6 +97,45 @@ void click1()
     delay(200);
     ignited = false;
   }
+}
+
+void click2()
+{
+  if (color < 2)
+  {
+    color++;
+  }
+  else 
+  {
+    color = 0;
+  }
+
+  if(ignited)
+  {
+    if (color == 0)
+    {
+      for (int i = 0; i < NUM_LEDS; i++)
+      {
+        leds[i] = blue;
+      }
+    }
+    else if (color == 1)
+    {
+      for (int i = 0; i < NUM_LEDS; i++)
+      {
+        leds[i] = red;
+      }
+    }
+    else
+    {
+      for (int i = 0; i < NUM_LEDS; i++)
+      {
+        leds[i] = green;
+      }
+    }
+  }
+
+  FastLED.show();
 }
 
 
