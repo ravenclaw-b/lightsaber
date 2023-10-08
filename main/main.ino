@@ -1,10 +1,11 @@
 #include <FastLED.h>
 #include <OneButton.h>
+#include <toneAC.h>
 
 #define LED_PIN 2
 #define NUM_LEDS 144
 #define IGNITION_PIN 3
-#define BUZZER_PIN 9 // Define the buzzer pin
+#define BUZZER_PIN 1000 // Define the buzzer pin
 
 CRGB blue(0, 0, 255);
 CRGB red(255, 0, 0);
@@ -41,6 +42,7 @@ void loop()
   // RED GREEN BLUE
   btn.tick();
 
+  //rainbow mode
   //if (ignited)
   //{
   //  for (int j = 0; j < 255; j++) 
@@ -60,7 +62,7 @@ void click1()
   if (!ignited)
   {
     // Ignition sound
-    tone(BUZZER_PIN, 440); // Start with a low-frequency sound
+    toneAC(BUZZER_PIN, 900); // Start with a low-frequency sound
 
     for (int i = 0; i < NUM_LEDS; i++)
     {
@@ -78,7 +80,7 @@ void click1()
       }
       FastLED.show();
     }
-    noTone(BUZZER_PIN);
+    noToneAC();
     delay(200);
     ignited = true;
   }
@@ -91,14 +93,15 @@ void click1()
       leds[i] = CRGB(0, 0, 0);
       FastLED.show();
       freq += 20;
-      tone(BUZZER_PIN, freq);
+      toneAC(BUZZER_PIN, freq);
     }
-    noTone(BUZZER_PIN);
+    noToneAC();
     delay(200);
     ignited = false;
   }
 }
 
+//mode change 
 void click2()
 {
   if (color < 2)
@@ -134,15 +137,5 @@ void click2()
       }
     }
   }
-
   FastLED.show();
 }
-
-
-//for (int i = 0; i < NUM_LEDS; i++)
-//{
-//  leds[i] = CRGB(0, 0, random(60, 255));
-//}
-
-//FastLED.show();
-//delay(50);
